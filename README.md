@@ -104,14 +104,11 @@ The main objective is to validate API functionality, response data, HTTP status 
 
 ## 6. Project Structure
 
-```text
 CoinGecko-API-Testing/
 │
-├── Collection/
-│   └── CoinGecko API Testing.postman_collection.json
+├── CoinGecko API Testing.postman_collection.json
 │
 └── README.md
-```
 
 ## 7. How to Execute the Project
 
@@ -120,7 +117,7 @@ Follow these steps to execute the API test collection:
 1. Clone or download this repository.
 2. Install and open Postman.
 3. Click on Import.
-4. Import the Postman collection JSON file from the Collection folder.
+4. Import the CoinGecko API Testing.postman_collection.json file from the repository's root directory.
 5. Create a Postman Environment named `CoinGecko Environment`.
 6. Configure the required environment variables:
    - `coinGeckoApiKey`
@@ -143,8 +140,7 @@ This project demonstrates practical experience in API testing, JavaScript assert
 
 ## 9. Author
 
-QA Manual API Testing Project
-
-Tool: Postman
-
-API Provider: CoinGecko
+- Author: Naveen Kumar
+- Project: CoinGecko API Testing
+- Tool: Postman
+- API Provider: CoinGecko
