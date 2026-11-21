@@ -1,0 +1,495 @@
+{
+  "info": {
+    "_postman_id": "2c0f9bea-6cec-4cd8-b523-36fb4f93131a",
+    "name": "CoinGecko API Testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54741651",
+    "_collection_link": "https://go.postman.co/collection/54741651-2c0f9bea-6cec-4cd8-b523-36fb4f93131a?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get Bitcoin Historical Data - Positive Test",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status Code Validation\r\npm.test(\"Status code is 200\", function(){\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\n// Coin ID Validation\r\npm.test(\"Verify coin ID\", function(){\r\n    pm.expect(response.id).to.eql(\"bitcoin\");\r\n});\r\n\r\n// Coin Symbol Validation\r\npm.test(\"Verify coin symbol\", function(){\r\n    pm.expect(response.symbol).to.eql(\"btc\");\r\n});\r\n\r\n// Coin Name Validation\r\npm.test(\"Verify coin name\", function(){\r\n    pm.expect(response.name).to.eql(\"Bitcoin\");\r\n});\r\n\r\n// Localization Validation\r\npm.test(\"English localization should be Bitcoin\", function() {\r\n    pm.expect(response.localization.en).to.eql(\"Bitcoin\");\r\n});\r\n\r\n// Image Validation\r\npm.test(\"Bitcoin thumbnail URL should be present\", function() {\r\n    pm.expect(response.image.thumb).to.be.a(\"string\");\r\n});\r\n\r\n// Market Data Validation\r\npm.test(\"Market data should be present\", function() {\r\n    pm.expect(response.market_data).to.be.an(\"object\");\r\n});\r\n\r\n// Current Price Validation\r\npm.test(\"USD current price should be a number\", function() {\r\n    pm.expect(response.market_data.current_price.usd).to.be.a(\"number\");\r\n});\r\n\r\n// Market Cap Validation\r\npm.test(\"USD market cap should be a number\", function() {\r\n    pm.expect(response.market_data.market_cap.usd).to.be.a(\"number\");\r\n});\r\n\r\n// Total Volume Validation\r\npm.test(\"USD total volume should be a number\", function() {\r\n    pm.expect(response.market_data.total_volume.usd).to.be.a(\"number\");\r\n});\r\n\r\n// INR Price Validation\r\npm.test(\"INR current price should be a number\", function() {\r\n    pm.expect(response.market_data.current_price.inr).to.be.a(\"number\");\r\n});\r\n\r\n// Response Time Validation\r\npm.test(\"Response time is less than 2000ms\", function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(2000);\r\n});\r\n\r\n\r\n\r\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.coingecko.com/api/v3/coins/bitcoin/history?date=03-11-2026",
+          "protocol": "https",
+          "host": [
+            "api",
+            "coingecko",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v3",
+            "coins",
+            "bitcoin",
+            "history"
+          ],
+          "query": [
+            {
+              "key": "date",
+              "value": "03-11-2026"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Bitcoin Historical Data - Negative Test",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "\r\n// Status Code Validation\r\npm.test(\"Status code is 404\", function(){\r\n    pm.response.to.have.status(404);\r\n});\r\n\r\n// Error message + Error code validation\r\n\r\npm.test(\"Error message is coin not found\",function(){\r\n    pm.expect(pm.response.json().status.error_message).to.eql(\"coin not found\");\r\n});\r\n\r\npm.test(\"Error code is 10013\", function () {\r\npm.expect(pm.response.json().status.error_code).to.eql(10013);\r\n});\r\n\r\n// Data Type Validation\r\npm.test(\"Error message is a string\",function(){\r\n    pm.expect(pm.response.json().status.error_message).to.be.a(\"string\");\r\n});\r\n\r\npm.test(\"Error code is a number\", function(){\r\n    pm.expect(pm.response.json().status.error_code).to.be.a(\"number\");\r\n});\r\n\r\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.coingecko.com/api/v3/coins/bitcoins/history?date=03-11-2026",
+          "protocol": "https",
+          "host": [
+            "api",
+            "coingecko",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v3",
+            "coins",
+            "bitcoins",
+            "history"
+          ],
+          "query": [
+            {
+              "key": "date",
+              "value": "03-11-2026"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Multiple Coins - Positive Test",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status Code Validation\r\npm.test(\"Status code is 200\", function(){\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\n// Array Validation\r\npm.test(\"Response should be array\", function(){\r\n    pm.expect(Array.isArray(response)).to.eql(true);\r\n});\r\n\r\n// Array Length Validation\r\npm.test(\"Array length should be 2\", function(){\r\n    pm.expect(response.length).to.eql(2);\r\n});\r\n\r\n// Object Validation\r\npm.test(\"First object should have id bitcoin\", function(){\r\n    pm.expect(response[0].id).to.eql(\"bitcoin\");\r\n});\r\n\r\npm.test(\"Second object should have id ethereum\", function(){\r\n    pm.expect(response[1].id).to.eql(\"ethereum\");\r\n});\r\n\r\n// Currency Validation\r\npm.test(\"Currency parameter should be INR\", function(){\r\n    pm.expect(pm.request.url.query.get(\"vs_currency\")).to.eql(\"inr\");\r\n});\r\n\r\n// API Key Header Validation\r\npm.test(\"API key header is present\", function(){\r\n    pm.expect(pm.request.headers.get(\"x-cg-demo-api-key\")).to.not.be.undefined;\r\n});\r\n\r\n// Accept Header Validation\r\npm.test(\"Accept header is application/json\", function(){\r\n    pm.expect(pm.request.headers.get(\"Accept\")).to.eql(\"application/json\");\r\n});\r\n\r\n// Response Time Validation\r\npm.test(\"Response time is less than 2000ms\", function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(2000);\r\n});\r\n\r\n// Bitcoin Symbol Validation\r\npm.test(\"Bitcoin symbol should be btc\", function(){\r\n    pm.expect(response[0].symbol).to.eql(\"btc\");\r\n});\r\n\r\n// Bitcoin Name Validation\r\npm.test(\"Bitcoin name should be Bitcoin\", function(){\r\n    pm.expect(response[0].name).to.eql(\"Bitcoin\");\r\n});\r\n\r\n// Ethereum Symbol Validation\r\npm.test(\"Ethereum symbol should be eth\", function(){\r\n    pm.expect(response[1].symbol).to.eql(\"eth\");\r\n});\r\n\r\n// Ethereum Name Validation\r\npm.test(\"Ethereum name should be Ethereum\", function(){\r\n    pm.expect(response[1].name).to.eql(\"Ethereum\");\r\n});\r\n\r\n// Bitcoin Current Price Validation\r\npm.test(\"Bitcoin current price should be a number\", function(){\r\n    pm.expect(response[0].current_price).to.be.a(\"number\");\r\n});\r\n\r\n// Ethereum Current Price Validation\r\npm.test(\"Ethereum current price should be a number\", function(){\r\n    pm.expect(response[1].current_price).to.be.a(\"number\");\r\n});\r\n\r\n// Market Cap Validation\r\npm.test(\"Bitcoin market cap should be a number\", function(){\r\n    pm.expect(response[0].market_cap).to.be.a(\"number\");\r\n});\r\n\r\n// Last Updated Validation\r\npm.test(\"Bitcoin last updated should be a string\", function(){\r\n    pm.expect(response[0].last_updated).to.be.a(\"string\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-cg-demo-api-key",
+            "value": "{{coinGeckoApiKey}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&ids=bitcoin,ethereum",
+          "protocol": "https",
+          "host": [
+            "api",
+            "coingecko",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v3",
+            "coins",
+            "markets"
+          ],
+          "query": [
+            {
+              "key": "vs_currency",
+              "value": "inr"
+            },
+            {
+              "key": "ids",
+              "value": "bitcoin,ethereum"
+            }
+          ]
+        },
+        "description": "FInal Observation :\n\n`CoinGecko public market-data endpoint returned 200 OK even when the API key was missing or invalid.`"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Multiple Coins - Missing IDs Parameter",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status Code Validation\r\npm.test(\"Status code is 200\", function() {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\n// Response should be an array\r\npm.test(\"Response should be an array\", function() {\r\n    pm.expect(Array.isArray(response)).to.eql(true);\r\n});\r\n\r\n// Response should contain coins\r\npm.test(\"Response should contain coins\", function() {\r\n    pm.expect(response.length).to.be.above(0);\r\n});\r\n\r\n// Response Time Validation\r\npm.test(\"Response time is less than 2000ms\", function() {\r\n    pm.expect(pm.response.responseTime).to.be.below(2000);\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-cg-demo-api-key",
+            "value": "{{coinGeckoApiKey}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr",
+          "protocol": "https",
+          "host": [
+            "api",
+            "coingecko",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v3",
+            "coins",
+            "markets"
+          ],
+          "query": [
+            {
+              "key": "vs_currency",
+              "value": "inr"
+            }
+          ]
+        },
+        "description": "FInal Observation :\n\n`CoinGecko public market-data endpoint returned 200 OK even when the API key was missing or invalid.`"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Multiple Coins - Missing Currency",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status Code Validation\r\npm.test(\"Status code is 422\", function() {\r\n    pm.response.to.have.status(422);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\n// Error Message Validation\r\npm.test(\"Verify missing parameter error\", function() {\r\n    pm.expect(response.error).to.eql(\"Missing parameter vs_currency\");\r\n});\r\n\r\n// Response Time Validation\r\npm.test(\"Response time is less than 2000ms\", function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(2000);\r\n});\r\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-cg-demo-api-key",
+            "value": "{{coinGeckoApiKey}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.coingecko.com/api/v3/coins/markets?ids=bitcoin,ethereum",
+          "protocol": "https",
+          "host": [
+            "api",
+            "coingecko",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v3",
+            "coins",
+            "markets"
+          ],
+          "query": [
+            {
+              "key": "ids",
+              "value": "bitcoin,ethereum"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Multiple Coins - Invalid Coin ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status Code Validation\r\npm.test(\"Status code is 200\", function() {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\n// Response should be an array\r\npm.test(\"Response should be an array\", function() {\r\n    pm.expect(Array.isArray(response)).to.eql(true);\r\n});\r\n\r\n// Invalid coin ID should return empty array\r\npm.test(\"Response should be empty\", function() {\r\n    pm.expect(response.length).to.eql(0);\r\n});\r\n\r\n// Response Time Validation\r\npm.test(\"Response time is less than 2000ms\", function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(2000);\r\n});\r\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-cg-demo-api-key",
+            "value": "{{coinGeckoApiKey}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&ids=invalidcoin123",
+          "protocol": "https",
+          "host": [
+            "api",
+            "coingecko",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v3",
+            "coins",
+            "markets"
+          ],
+          "query": [
+            {
+              "key": "vs_currency",
+              "value": "inr"
+            },
+            {
+              "key": "ids",
+              "value": "invalidcoin123"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Multiple Coins - Empty Coin ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status Code Validation\r\npm.test(\"Status code is 200\", function() {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\n// Response should be an array\r\npm.test(\"Response should be an array\", function() {\r\n    pm.expect(Array.isArray(response)).to.eql(true);\r\n});\r\n\r\n// Response should contain coins\r\npm.test(\"Response should contain coins\", function() {\r\n    pm.expect(response.length).to.be.above(0);\r\n});\r\n\r\n// Response Time Validation\r\npm.test(\"Response time is less than 2000ms\", function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(2000);\r\n});\r\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-cg-demo-api-key",
+            "value": "{{coinGeckoApiKey}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&ids=",
+          "protocol": "https",
+          "host": [
+            "api",
+            "coingecko",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v3",
+            "coins",
+            "markets"
+          ],
+          "query": [
+            {
+              "key": "vs_currency",
+              "value": "inr"
+            },
+            {
+              "key": "ids",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Multiple Coins - Invalid Currency",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status Code Validation\r\npm.test(\"Status code is 400\", function() {\r\n    pm.response.to.have.status(400);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\n// Error Message Validation\r\npm.test(\"Verify error message\", function() {\r\n    pm.expect(response.error).to.eql(\"invalid vs_currency\");\r\n});\r\n\r\n// Response Time Validation\r\npm.test(\"Response time is less than 2000ms\", function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(2000);\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-cg-demo-api-key",
+            "value": "{{coinGeckoApiKey}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.coingecko.com/api/v3/coins/markets?vs_currency=xyz&ids=bitcoin,ethereum",
+          "protocol": "https",
+          "host": [
+            "api",
+            "coingecko",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v3",
+            "coins",
+            "markets"
+          ],
+          "query": [
+            {
+              "key": "vs_currency",
+              "value": "xyz"
+            },
+            {
+              "key": "ids",
+              "value": "bitcoin,ethereum"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Ethereum Historical Data - Positive Test",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "\r\n // Status Code Validation\r\npm.test(\"Status code is 200\", function() {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\n// Prices Validation\r\npm.test(\"Prices should be an array\", function() {\r\n    pm.expect(response.prices).to.be.an(\"array\");\r\n});\r\n\r\npm.test(\"Prices data should not be empty\", function() {\r\n    pm.expect(response.prices.length).to.be.above(0);\r\n});\r\n\r\n// Market Cap Validation\r\npm.test(\"Market caps should be an array\", function() {\r\n    pm.expect(response.market_caps).to.be.an(\"array\");\r\n});\r\n\r\npm.test(\"Market caps data should not be empty\", function() {\r\n    pm.expect(response.market_caps.length).to.be.above(0);\r\n});\r\n\r\n// Total Volume Validation\r\npm.test(\"Total volumes should be an array\", function() {\r\n    pm.expect(response.total_volumes).to.be.an(\"array\");\r\n});\r\n\r\npm.test(\"Total volumes data should not be empty\", function() {\r\n    pm.expect(response.total_volumes.length).to.be.above(0);\r\n});\r\n\r\n// Price Data Validation\r\npm.test(\"Price timestamp should be a number\", function() {\r\n    pm.expect(response.prices[0][0]).to.be.a(\"number\");\r\n});\r\n\r\npm.test(\"Price value should be a number\", function() {\r\n    pm.expect(response.prices[0][1]).to.be.a(\"number\");\r\n});\r\n\r\n// Response Time Validation\r\npm.test(\"Response time is less than 2000ms\", function() {\r\n    pm.expect(pm.response.responseTime).to.be.below(2000);\r\n});\r\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.coingecko.com/api/v3/coins/{{ethereumId}}/market_chart?vs_currency=inr&days=7",
+          "protocol": "https",
+          "host": [
+            "api",
+            "coingecko",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v3",
+            "coins",
+            "{{ethereumId}}",
+            "market_chart"
+          ],
+          "query": [
+            {
+              "key": "vs_currency",
+              "value": "inr"
+            },
+            {
+              "key": "days",
+              "value": "7"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Ethereum Historical Data - Negative Test",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status Code Validation\r\npm.test(\"Status code is 404\", function() {\r\n    pm.response.to.have.status(404);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\n// Error Message Validation\r\npm.test(\"Error message should be coin not found\", function() {\r\n    pm.expect(response.error).to.eql(\"coin not found\");\r\n});\r\n\r\n// Error Message Type Validation\r\npm.test(\"Error message should be a string\", function() {\r\n    pm.expect(response.error).to.be.a(\"string\");\r\n});\r\n\r\n// Response Time Validation\r\npm.test(\"Response time is less than 2000ms\", function() {\r\n    pm.expect(pm.response.responseTime).to.be.below(2000);\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.coingecko.com/api/v3/coins/invalidcoin123/market_chart?vs_currency=inr&days=7",
+          "protocol": "https",
+          "host": [
+            "api",
+            "coingecko",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v3",
+            "coins",
+            "invalidcoin123",
+            "market_chart"
+          ],
+          "query": [
+            {
+              "key": "vs_currency",
+              "value": "inr"
+            },
+            {
+              "key": "days",
+              "value": "7"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
