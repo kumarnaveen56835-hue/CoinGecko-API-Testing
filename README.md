@@ -90,6 +90,7 @@ The main objective is to validate API functionality, response data, HTTP status 
 - Environment Variables
 - Postman Collection Runner
 
+
 ## 5. Test Execution Summary
 
 | Metric | Result |
@@ -99,8 +100,10 @@ The main objective is to validate API functionality, response data, HTTP status 
 | Passed | 66 |
 | Failed | 0 |
 | Skipped | 0 |
-| Average Response Time | 395 ms |
-| Execution Duration | 5.385 seconds |
+| Errors | 0 |
+| Average Response Time | 467 ms |
+| Execution Duration | 6.326 seconds |
+
 
 ## 6. Project Structure
 
